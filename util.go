@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+
+	"github.com/manyminds/api2go"
 )
 
 // writeJSON outputs a JSON response for the provided data.
@@ -25,5 +27,13 @@ func writeJSON(w http.ResponseWriter, i interface{}, status int) {
 
 // writeError outputs a JSON response for an error.
 func writeError(w http.ResponseWriter, err error, status int) {
-	writeJSON(w, map[string]string{"error": err.Error()}, status)
+	writeJSON(
+		w,
+		api2go.NewHTTPError(
+			err,
+			err.Error(),
+			status,
+		),
+		status,
+	)
 }
