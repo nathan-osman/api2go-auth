@@ -35,8 +35,8 @@ func New(api *api2go.API, authenticator Authenticator, secretKey string) *Auth {
 			store:         sessions.NewCookieStore([]byte(secretKey)),
 		}
 	)
-	r.HandleFunc("/login", a.login)
-	r.HandleFunc("/logout", a.logout)
+	r.HandleFunc("/login", a.login).Methods(http.MethodPost)
+	r.HandleFunc("/logout", a.logout).Methods(http.MethodPost)
 	r.Handle("/", api.Handler())
 	return a
 }
