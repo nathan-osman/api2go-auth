@@ -14,7 +14,8 @@ func (a *Auth) initialize(w http.ResponseWriter, r *http.Request) {
 		writeError(w, errAuthRequired, http.StatusForbidden)
 		return
 	}
-	if err := a.authenticator.Initialize(r, i); err != nil {
+	r, err := a.authenticator.Initialize(r, i)
+	if err != nil {
 		writeError(w, err, http.StatusInternalServerError)
 		return
 	}

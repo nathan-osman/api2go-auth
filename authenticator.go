@@ -17,5 +17,5 @@ type Authenticator interface {
 	// this involves setting a value on the request's context based on the
 	// provided session object (returned by Authenticate). The request is not
 	// processed further if an error is returned.
-	Initialize(r *http.Request, i interface{}) error
+	Initialize(r *http.Request, i interface{}) (*http.Request, error)
 }
