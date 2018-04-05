@@ -37,7 +37,7 @@ func New(api *api2go.API, authenticator Authenticator, secretKey string) *Auth {
 	)
 	r.HandleFunc("/login", a.login).Methods(http.MethodPost)
 	r.HandleFunc("/logout", a.logout).Methods(http.MethodPost)
-	r.Handle("/", api.Handler())
+	r.HandleFunc("/", a.initialize)
 	return a
 }
 

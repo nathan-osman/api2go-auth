@@ -15,5 +15,5 @@ type Authenticator interface {
 	// Initialize prepares an authenticated request for processing. Typically,
 	// this involves setting a value on the request's context based on the
 	// provided session object (returned by Authenticate).
-	Initialize(r *http.Request, i interface{})
+	Initialize(r *http.Request, i interface{}) error
 }
