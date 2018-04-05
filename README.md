@@ -14,9 +14,9 @@ Here are some of the features that api2go-auth provides:
 - Ensures all API methods are authenticated
 - Enables full customization of the authentication process
 
-### Usage
+### Server Usage
 
-To use api2g-auth, you must first create a type that implements [`Authenticator`](https://godoc.org/github.com/nathan-osman/api2go-auth#Authenticator):
+To use api2g-auth, you must first create a type that implements [`Authenticator`](https://godoc.org/github.com/nathan-osman/api2go-auth#Authenticator). In the following example, user credentials are stored in a database:
 
 ```go
 type UserAuth struct {}
@@ -54,3 +54,9 @@ var (
 ```
 
 `h` can then be used as an HTTP handler.
+
+### Client Usage
+
+Clients must log in my sending a POST request to the `/login` endpoint and including the data expected by `Authenticate` (a username and password, for example). If successful, the data returned by `Authenticate` will be send to the client in JSONAPI format. A cookie will be set that authenticates future requests.
+
+When a session is ready to be ended, the client may send a POST request to `/logout` to destroy the session.
