@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
 	"github.com/manyminds/api2go"
 )
@@ -24,15 +25,19 @@ type Auth struct {
 }
 
 // New creates a new handler for the provided API using the provided
-// authenticator for requests.
-func New(api *api2go.API, authenticator Authenticator, secretKey string) *Auth {
+// authenticator for requests. The secret key allows for persistent sessions
+// and may be set to nil to disable the feature.
+func New(api *api2go.API, authenticator Authenticator, secretKey []byte) *Auth {
+	if secretKey == nil {
+		secretKey = securecookie.GenerateRandomKey(32)
+	}
 	var (
 		r = mux.NewRouter()
 		a = &Auth{
 			api:           api,
 			authenticator: authenticator,
 			router:        r,
-			store:         sessions.NewCookieStore([]byte(secretKey)),
+			store:         sessions.NewCookieStore(secretKey),
 		}
 	)
 	r.HandleFunc("/login", a.login).Methods(http.MethodPost)
