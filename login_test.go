@@ -40,6 +40,7 @@ func TestLogin(t *testing.T) {
 			http.MethodPost,
 			"/login",
 			nil,
+			nil,
 			v.Status,
 		); err != nil {
 			t.Fatal(err)
