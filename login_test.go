@@ -3,8 +3,6 @@ package auth
 import (
 	"net/http"
 	"testing"
-
-	"github.com/manyminds/api2go"
 )
 
 var TestLoginData = []struct {
@@ -28,21 +26,9 @@ var TestLoginData = []struct {
 
 func TestLogin(t *testing.T) {
 	for _, v := range TestLoginData {
-		var (
-			api = api2go.NewAPI("api")
-			h   = New(api, &TestAuthenticator{
-				ShouldSucceed:      v.ShouldSucceed,
-				ShouldAuthenticate: v.ShouldAuthenticate,
-			}, nil)
-		)
-		if _, err := sendRequest(
-			h,
-			http.MethodPost,
-			"/login",
-			nil,
-			nil,
-			v.Status,
-		); err != nil {
+		h := createAPI(v.ShouldSucceed, v.ShouldAuthenticate, false)
+		_, err := login(h, v.Status)
+		if err != nil {
 			t.Fatal(err)
 		}
 	}
