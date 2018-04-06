@@ -16,7 +16,7 @@ Here are some of the features that api2go-auth provides:
 
 ### Server Usage
 
-To use api2g-auth, you must first create a type that implements [`Authenticator`](https://godoc.org/github.com/nathan-osman/api2go-auth#Authenticator). In the following example, user credentials are stored in a database:
+To use api2go-auth, you must first create a type that implements [`Authenticator`](https://godoc.org/github.com/nathan-osman/api2go-auth#Authenticator). In the following example, user credentials are stored in a database:
 
 ```go
 type UserAuth struct {}
