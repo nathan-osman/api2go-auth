@@ -34,14 +34,7 @@ func TestInitialize(t *testing.T) {
 		if !v.Cookies {
 			c = nil
 		}
-		if _, err := sendRequest(
-			h,
-			http.MethodGet,
-			"/items",
-			c,
-			nil,
-			v.Status,
-		); err != nil {
+		if err := findAll(h, c, v.Status); err != nil {
 			t.Fatal(err)
 		}
 	}

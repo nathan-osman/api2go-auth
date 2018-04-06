@@ -2,7 +2,6 @@ package auth
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 	"net/http/httptest"
 
@@ -36,10 +35,10 @@ func createAPI(shouldSucceed, shouldAuthenticate, shouldInitialize bool) *Auth {
 	return h
 }
 
-func sendRequest(h http.Handler, method, target string, cookies []*http.Cookie, body io.Reader, code int) (*http.Response, error) {
+func sendRequest(h http.Handler, method, target string, cookies []*http.Cookie, code int) (*http.Response, error) {
 	var (
 		w = httptest.NewRecorder()
-		r = httptest.NewRequest(method, target, body)
+		r = httptest.NewRequest(method, target, nil)
 	)
 	for _, c := range cookies {
 		r.AddCookie(c)
@@ -57,11 +56,21 @@ func login(h http.Handler, code int) ([]*http.Cookie, error) {
 		http.MethodPost,
 		"/login",
 		nil,
-		nil,
 		code,
 	)
 	if err != nil {
 		return nil, err
 	}
 	return r.Cookies(), nil
+}
+
+func findAll(h http.Handler, cookies []*http.Cookie, code int) error {
+	_, err := sendRequest(
+		h,
+		http.MethodGet,
+		"/items",
+		cookies,
+		code,
+	)
+	return err
 }
